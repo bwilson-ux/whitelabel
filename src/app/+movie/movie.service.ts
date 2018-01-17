@@ -21,11 +21,13 @@ export class MovieService {
     // private instance variable to hold base url
     private moviesUrl = 'https://swapi.co/api/';
 
-    getMovies(url): Observable<Movie[]> {
-        return this.http.get(this.moviesUrl + url, { observe: 'response' }))
-    }
-
     getMovie(array, id): Movie {
         return array.find(p => p.episode_id === id);
     }
+
+    getMovies(url): Observable<Movie> {
+        return this.http.get<Movie>(this.moviesUrl + url);
+    }
+    
+
 }

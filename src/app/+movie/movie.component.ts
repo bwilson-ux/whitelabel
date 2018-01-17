@@ -30,12 +30,12 @@ export class MovieComponent implements OnInit {
   public ngOnInit() {
 
     this.movieService.getMovies('films').subscribe((result: any) => {
-      let res = result.body;
+      let res = result;
       this.movies = res.results;
     }, (error: any) => {
       if (typeof error['Errors'] != "undefined") {
         console.log(error['Errors']);
       }
     });
-   }
+  }
 }
