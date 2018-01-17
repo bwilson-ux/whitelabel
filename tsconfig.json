@@ -1,5 +1,6 @@
 {
-  "compilerOptions": {
+  "compilerOptions":
+  {
     "target": "es5",
     "module": "commonjs",
     "moduleResolution": "node",
@@ -16,8 +17,19 @@
       "es6"
     ],
     "baseUrl": "./src",
-    "paths": {
-      "@angular/*": ["node_modules/@angular/*"]
+    "paths":
+    {
+      "@angular/common": ["./node_modules/@angular/common"],
+      "@angular/animations": ["./node_modules/@angular/animations"],
+      "@angular/cdk": ["./node_modules/@angular/cdk"],
+      "@angular/material": ["./node_modules/@angular/material"],
+      "@angular/compiler": ["./node_modules/@angular/compiler"],
+      "@angular/core": ["./node_modules/@angular/core"],
+      "@angular/forms": ["./node_modules/@angular/forms"],
+      "@angular/platform-browser": ["./node_modules/@angular/platform-browser"],
+      "@angular/platform-browser-dynamic": ["./node_modules/@angular/platform-browser-dynamic"],
+      "@angular/router": ["./node_modules/@angular/router"],
+      "@angular/http": ["./node_modules/@angular/http"]
     },
     "typeRoots": [
       "node_modules/@types"
@@ -35,13 +47,15 @@
     "node_modules",
     "dist"
   ],
-  "awesomeTypescriptLoaderOptions": {
+  "awesomeTypescriptLoaderOptions":
+  {
     "forkChecker": true,
     "useWebpackText": true
   },
   "compileOnSave": false,
   "buildOnSave": false,
-  "atom": {
+  "atom":
+  {
     "rewriteTsconfig": false
   }
 }
