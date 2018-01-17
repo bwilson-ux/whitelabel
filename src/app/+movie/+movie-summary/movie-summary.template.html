@@ -1,0 +1,28 @@
+<section *ngIf="movie">
+    <h2>You selected:  {{movie.title}}</h2>
+    <h3>Description</h3>
+    <p>
+       {{movie.title}} was released in {{movie.release_date}}. It was directed by {{movie.diredtor}} and produced by {{movie.producer}}.
+    </p>
+    <p>Opening Crawl:</p>
+    <p>{{movie.opening_crawl}}</p>
+
+    <li *ngFor="let item of movie.species">
+    <a [routerLink]="['./summary/species/' + item.species_id]">
+        {{item}}
+      </a>
+  </li>
+</section>
+
+<!--   created: object;
+  director: string;
+  edited: object;
+  episode_id: number;
+  opening_crawl: string;
+  planets: any;
+  producer: string;
+  release_date: object;
+  species: any;
+  starships: any;
+  title: string;
+  url: string; -->

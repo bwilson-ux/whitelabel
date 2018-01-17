@@ -1,0 +1,15 @@
+<mat-toolbar color="primary">
+  Whitelabel App
+</mat-toolbar>
+<nav>
+	<a [routerLink]=" ['./'] " routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Index</a>
+	<a [routerLink]=" ['./home'] " routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+	<a [routerLink]=" ['./movies'] " routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Movies</a>
+	<a [routerLink]=" ['./about'] " routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">About</a>
+</nav>
+<main>
+	<router-outlet></router-outlet>
+</main>
+<footer>
+This is the footer
+</footer>

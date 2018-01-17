@@ -1,0 +1,11 @@
+<div *ngIf="movies; then thenBlock else elseBlock"></div>
+<ng-template #thenBlock>
+  <li *ngFor="let item of this.movies | orderBy : ['episode_id']">
+    <a [routerLink]="['./summary/' + item.episode_id]">
+        {{item.title}} - {{item.episode_id}}
+      </a>
+  </li>
+</ng-template>
+<ng-template #elseBlock>
+  LOADING...
+</ng-template>
