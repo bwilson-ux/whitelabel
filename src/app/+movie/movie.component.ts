@@ -16,7 +16,7 @@ console.log('`Movie` component loaded asynchronously');
 
 @Component({
   selector: 'movie',
-  template: require('./movie.template.html'),
+  templateUrl: './movie.template.html',
 })
 
 

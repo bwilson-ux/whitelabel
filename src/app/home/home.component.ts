@@ -23,11 +23,11 @@ import { XLargeDirective } from './x-large';
   /**
    * Our list of styles in our component. We may add more to compose many styles together.
    */
-  styleUrls: [ './home.style.css' ],
+  styleUrls: ['./home.style.css'],
   /**
    * Every Angular template is first compiled by the browser before Angular runs it's compiler.
    */
-  template: require('./home.template.html')
+  templateUrl: './home.template.html'
 })
 
 // export class Repeater { 
@@ -42,7 +42,7 @@ export class HomeComponent implements OnInit {
   public listOfItems = [{
     name: 'Jim',
     age: '12'
-  },{
+  }, {
     name: 'Mark',
     age: '34'
   }];
@@ -52,7 +52,7 @@ export class HomeComponent implements OnInit {
   constructor(
     public appState: AppState,
     public title: Title
-  ) {}
+  ) { }
 
   public ngOnInit() {
     console.log('hello `Home` component');

@@ -8,14 +8,14 @@ import _ from 'lodash';
 @Component({
   selector: 'about',
   styleUrls: ['./about.style.scss'],
-  template: require('./about.template.html')
+  templateUrl: './about.template.html'
 })
 export class AboutComponent implements OnInit {
 
   public localState: any;
   constructor(
     public route: ActivatedRoute
-  ) {}
+  ) { }
 
   public ngOnInit() {
     this.route
@@ -28,7 +28,7 @@ export class AboutComponent implements OnInit {
         this.loadView(this.localState);
       });
 
-    
+
     /**
      * static data that is bundled
      * var mockData = require('assets/mock-data/mock-data.json');
@@ -39,9 +39,9 @@ export class AboutComponent implements OnInit {
   }
 
   public loadView(data) {
-    if(data && !_.isEmpty(data)){
+    if (data && !_.isEmpty(data)) {
       console.log('TITLE:', data.title);
-     }
+    }
   }
 
   private asyncDataWithWebpack() {

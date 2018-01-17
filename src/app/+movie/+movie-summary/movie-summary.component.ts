@@ -6,7 +6,7 @@ import { Movie } from "../movie.interface";
 
 @Component({
   selector: 'movie-summary',
-  template: require('./movie-summary.template.html'),
+  templateUrl: './movie-summary.template.html',
   styles: []
 })
 export class MovieSummaryComponent implements OnInit, OnDestroy {
