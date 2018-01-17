@@ -6,7 +6,7 @@ import { Environment } from './model';
 enableProdMode();
 
 export const environment: Environment = {
-  production: true,
+  production: false,
   showDevModule: false,
 
   /** Angular debug tools in the dev console
