@@ -27,17 +27,17 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 function getUglifyOptions (supportES2015) {
   const uglifyCompressOptions = {
-    pure_getters: true, /* buildOptimizer */
+    pure_getters: false, /* buildOptimizer */
     // PURE comments work best with 3 passes.
     // See https://github.com/webpack/webpack/issues/2899#issuecomment-317425926.
-    passes: 3         /* buildOptimizer */
+    passes: 1         /* buildOptimizer */
   };
 
   return {
     ecma: supportES2015 ? 6 : 5,
     warnings: false,    // TODO verbose based on option?
     ie8: false,
-    mangle: true,
+    mangle: false,
     compress: uglifyCompressOptions,
     output: {
       ascii_only: true,
@@ -156,7 +156,7 @@ module.exports = function (env) {
        */
       new ExtractTextPlugin('[name].[contenthash].css'),
 
-      // new PurifyPlugin(), /* buildOptimizer */
+      new PurifyPlugin(), /* buildOptimizer */
 
       new HashedModuleIdsPlugin(),
       new ModuleConcatenationPlugin()

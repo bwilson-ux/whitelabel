@@ -1,28 +1,19 @@
 <div>
-  <h1 x-large class="sample-content">Your Content Here</h1>
-  <hr>
-  <div>
-    For hot module reloading run
-    <pre>npm run start:hmr</pre>
-  </div>
-  <hr>
-  <div>
-    <h4>Local State</h4>
-    <form (ngSubmit)="submitState(localState.value)" autocomplete="off">
-      <input [value]="localState.value" (input)="localState.value = $event.target.value" placeholder="Submit Local State to App State" autofocus>
-      <button>Submit Value</button>
-    </form>
-    <ul>
-<!--       <li *ngFor="#item of listOfItems">
-        {{item.name}} - {{item.age}}
-      </li> -->
-    </ul>
-    <!--
-        <input type="text" [value]="localState.value" (input)="localState.value = $event.target.value" autofocus>
-        Rather than wiring up two-way data-binding ourselves with [value] and (input)
-        we can use Angular's [(ngModel)] syntax
-        <input type="text" name="textInput" [(ngModel)]="localState.value" autofocus>
-      -->
-    <pre>this.localState = {{ localState | json }}</pre>
-  </div>
+  <mat-menu x-position="before" #menu="matMenu">
+    <button mat-menu-item>Option 1</button>
+    <button mat-menu-item>Option 2</button>
+  </mat-menu>
+
+  <mat-card>
+    <button mat-button>All</button>
+    <button mat-raised-button>Of</button>
+    <button mat-raised-button color="primary">The</button>
+    <button mat-raised-button color="accent">Buttons</button>
+  </mat-card>
+
+  <span class="done">
+    <button mat-fab>
+      <mat-icon>check circle</mat-icon>
+    </button>
+  </span>
 </div>
