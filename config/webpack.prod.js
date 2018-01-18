@@ -1,39 +1,66 @@
 /**
  * @author: @AngularClass
  */
-
 const helpers = require('./helpers');
 const buildUtils = require('./build-utils');
-const webpackMerge = require('webpack-merge'); // used to merge webpack configs
-const commonConfig = require('./webpack.common.js'); // the settings that are common to prod and dev
+
+/**
+ * Used to merge webpack configs
+*/
+const webpackMerge = require('webpack-merge');
+/**
+ * The settings that are common to prod and dev
+*/
+const commonConfig = require('./webpack.common.js');
 
 /**
  * Webpack Plugins
  */
-const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
-const NamedModulesPlugin = require('webpack/lib/NamedModulesPlugin');
-const EvalSourceMapDevToolPlugin = require('webpack/lib/EvalSourceMapDevToolPlugin');
+const SourceMapDevToolPlugin = require('webpack/lib/SourceMapDevToolPlugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HashedModuleIdsPlugin = require('webpack/lib/HashedModuleIdsPlugin')
+const PurifyPlugin = require('@angular-devkit/build-optimizer').PurifyPlugin;
+const ModuleConcatenationPlugin = require('webpack/lib/optimize/ModuleConcatenationPlugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 
-/**
- * Webpack configuration
- *
- * See: http://webpack.github.io/docs/configuration.html#cli
- */
-module.exports = function (options) {
-  const ENV = process.env.ENV = process.env.NODE_ENV = 'development';
-  const HOST = process.env.HOST || 'localhost';
-  const PORT = process.env.PORT || 3000;
 
+function getUglifyOptions (supportES2015) {
+  const uglifyCompressOptions = {
+    pure_getters: true, /* buildOptimizer */
+    // PURE comments work best with 3 passes.
+    // See https://github.com/webpack/webpack/issues/2899#issuecomment-317425926.
+    passes: 3         /* buildOptimizer */
+  };
+
+  return {
+    ecma: supportES2015 ? 6 : 5,
+    warnings: false,    // TODO verbose based on option?
+    ie8: false,
+    mangle: true,
+    compress: uglifyCompressOptions,
+    output: {
+      ascii_only: true,
+      comments: false
+    }
+  };
+}
+
+module.exports = function (env) {
+  const ENV = process.env.NODE_ENV = process.env.ENV = 'production';
+  const supportES2015 = buildUtils.supportES2015(buildUtils.DEFAULT_METADATA.tsConfigPath);
   const METADATA = Object.assign({}, buildUtils.DEFAULT_METADATA, {
-    host: HOST,
-    port: PORT,
+    host: process.env.HOST || 'localhost',
+    port: process.env.PORT || 8080,
     ENV: ENV,
-    HMR: helpers.hasProcessFlag('hot'),
-    PUBLIC: process.env.PUBLIC_DEV || HOST + ':' + PORT
+    HMR: false
   });
 
-  return webpackMerge(commonConfig({ env: ENV, metadata: METADATA  }), {
+  // set environment suffix so these environments are loaded.
+  METADATA.envFileSuffix = METADATA.E2E ? 'e2e.prod' : 'prod';
+
+  return webpackMerge(commonConfig({ env: ENV, metadata: METADATA }), {
+
     /**
      * Options affecting the output of the compilation.
      *
@@ -54,7 +81,7 @@ module.exports = function (options) {
        *
        * See: http://webpack.github.io/docs/configuration.html#output-filename
        */
-      filename: '[name].bundle.js',
+      filename: '[name].[chunkhash].bundle.js',
 
       /**
        * The filename of the SourceMaps for the JavaScript files.
@@ -64,15 +91,14 @@ module.exports = function (options) {
        */
       sourceMapFilename: '[file].map',
 
-      /** The filename of non-entry chunks as relative path
+      /**
+       * The filename of non-entry chunks as relative path
        * inside the output.path directory.
        *
        * See: http://webpack.github.io/docs/configuration.html#output-chunkfilename
        */
-      chunkFilename: '[id].chunk.js',
+      chunkFilename: '[name].[chunkhash].chunk.js'
 
-      library: 'ac_[name]',
-      libraryTarget: 'var',
     },
 
     module: {
@@ -80,24 +106,26 @@ module.exports = function (options) {
       rules: [
 
         /**
-         * Css loader support for *.css files (styles directory only)
-         * Loads external css styles into the DOM, supports HMR
-         *
+         * Extract CSS files from .src/styles directory to external CSS file
          */
         {
           test: /\.css$/,
-          use: ['style-loader', 'css-loader'],
+          loader: ExtractTextPlugin.extract({
+            fallback: 'style-loader',
+            use: 'css-loader'
+          }),
           include: [helpers.root('src', 'styles')]
         },
 
         /**
-         * Sass loader support for *.scss files (styles directory only)
-         * Loads external sass styles into the DOM, supports HMR
-         *
+         * Extract and compile SCSS files from .src/styles directory to external CSS file
          */
         {
           test: /\.scss$/,
-          use: ['style-loader', 'css-loader', 'sass-loader'],
+          loader: ExtractTextPlugin.extract({
+            fallback: 'style-loader',
+            use: 'css-loader!sass-loader'
+          }),
           include: [helpers.root('src', 'styles')]
         },
 
@@ -105,65 +133,49 @@ module.exports = function (options) {
 
     },
 
+    /**
+     * Add additional plugins to the compiler.
+     *
+     * See: http://webpack.github.io/docs/configuration.html#plugins
+     */
     plugins: [
-      new EvalSourceMapDevToolPlugin({
+
+      new SourceMapDevToolPlugin({
+        filename: '[file].map[query]',
         moduleFilenameTemplate: '[resource-path]',
+        fallbackModuleFilenameTemplate: '[resource-path]?[hash]',
         sourceRoot: 'webpack:///'
       }),
 
-      /**
-       * Plugin: NamedModulesPlugin (experimental)
-       * Description: Uses file names as module name.
-       *
-       * See: https://github.com/webpack/webpack/commit/a04ffb928365b19feb75087c63f13cadfc08e1eb
-       */
-      new NamedModulesPlugin(),
 
       /**
-       * Plugin LoaderOptionsPlugin (experimental)
+       * Plugin: ExtractTextPlugin
+       * Description: Extracts imported CSS files into external stylesheet
        *
-       * See: https://gist.github.com/sokra/27b24881210b56bbaff7
+       * See: https://github.com/webpack/extract-text-webpack-plugin
        */
-      new LoaderOptionsPlugin({
-        debug: true,
-        options: { }
-      }),
+      new ExtractTextPlugin('[name].[contenthash].css'),
 
-      // TODO: HMR
+      new PurifyPlugin(), /* buildOptimizer */
+
+      new HashedModuleIdsPlugin(),
+      new ModuleConcatenationPlugin()
+
+      /**
+       * Plugin: UglifyJsPlugin
+       * Description: Minimize all JavaScript output of chunks.
+       * Loaders are switched into minimizing mode.
+       *
+       * See: https://webpack.github.io/docs/list-of-plugins.html#uglifyjsplugin
+       *
+       * NOTE: To debug prod builds uncomment //debug lines and comment //prod lines
+       */
+      // new UglifyJsPlugin({
+      //   sourceMap: true,
+      //   uglifyOptions: getUglifyOptions(supportES2015)
+      // })
+
     ],
-
-    /**
-     * Webpack Development Server configuration
-     * Description: The webpack-dev-server is a little node.js Express server.
-     * The server emits information about the compilation state to the client,
-     * which reacts to those events.
-     *
-     * See: https://webpack.github.io/docs/webpack-dev-server.html
-     */
-    devServer: {
-      port: METADATA.port,
-      host: METADATA.host,
-      hot: METADATA.HMR,
-      public: METADATA.PUBLIC,
-      historyApiFallback: true,
-      watchOptions: {
-        // if you're using Docker you may need this
-        // aggregateTimeout: 300,
-        // poll: 1000,
-        ignored: /node_modules/
-      },
-      /**
-      * Here you can access the Express app object and add your own custom middleware to it.
-      *
-      * See: https://webpack.github.io/docs/webpack-dev-server.html
-      */
-      setup: function(app) {
-        // For example, to define custom handlers for some paths:
-        // app.get('/some/path', function(req, res) {
-        //   res.json({ custom: 'response' });
-        // });
-      }
-    },
 
     /**
      * Include polyfills or mocks for various node stuff
@@ -174,7 +186,7 @@ module.exports = function (options) {
     node: {
       global: true,
       crypto: 'empty',
-      process: true,
+      process: false,
       module: false,
       clearImmediate: false,
       setImmediate: false
