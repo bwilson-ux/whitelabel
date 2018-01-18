@@ -156,7 +156,7 @@ module.exports = function (env) {
        */
       new ExtractTextPlugin('[name].[contenthash].css'),
 
-      new PurifyPlugin(), /* buildOptimizer */
+      // new PurifyPlugin(), /* buildOptimizer */
 
       new HashedModuleIdsPlugin(),
       new ModuleConcatenationPlugin()
