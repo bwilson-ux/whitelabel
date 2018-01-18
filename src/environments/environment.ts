@@ -1,5 +1,4 @@
 /* tslint:disable */
-
 import { ApplicationRef, NgModuleRef } from '@angular/core';
 import { enableDebugTools } from '@angular/platform-browser';
 import { Environment } from './model';

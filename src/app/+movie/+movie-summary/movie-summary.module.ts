@@ -6,6 +6,10 @@ import { RouterModule } from '@angular/router';
 import { routes } from './movie-summary.routes';
 import { MovieSummaryComponent } from './movie-summary.component';
 
+import {
+    MatCardModule
+} from '@angular/material';
+
 console.log('`MovieSummary` bundle loaded asynchronously');
 
 @NgModule({
@@ -18,6 +22,7 @@ console.log('`MovieSummary` bundle loaded asynchronously');
     imports: [
         CommonModule,
         FormsModule,
+        MatCardModule,
         RouterModule.forChild(routes),
     ],
 })

@@ -3,7 +3,7 @@ import {
   OnInit
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import _ from 'lodash';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'about',
@@ -54,7 +54,7 @@ export class AboutComponent implements OnInit {
 
       System.import('../../assets/mock-data/about.json')
         .then((json) => {
-          this.localState = json.data;
+          this.localState = json[0].res.data;
           this.loadView(this.localState);
         });
 

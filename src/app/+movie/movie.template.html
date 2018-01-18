@@ -1,11 +1,26 @@
-<div *ngIf="movies; then thenBlock else elseBlock"></div>
+<!-- <div *ngIf="movies; then thenBlock else elseBlock"></div>
 <ng-template #thenBlock>
-  <li *ngFor="let item of this.movies | orderBy : ['episode_id']">
-    <a [routerLink]="['./summary/' + item.episode_id]">
-        {{item.title}} - {{item.episode_id}}
-      </a>
-  </li>
+  <mat-list>
+    <mat-list-item *ngFor="let item of this.movies | orderBy : ['episode_id']>
+      <mat-icon matListIcon>folder</mat-icon>
+      <h3 matLine> <a [routerLink]=" [ './summary/' + item.episode_id] ">{{item.title}} - {{item.episode_id}} </a></h3>
+      <p matLine>
+        <span> Episode: {{item.episode_id}} </span>
+        <span class="demo-2 "> -- {{item.episode_id}} </span>
+      </p>
+    </mat-list-item>
+  </mat-list>
 </ng-template>
 <ng-template #elseBlock>
   LOADING...
 </ng-template>
+ -->
+<mat-card>
+  <mat-list>
+    <mat-list-item *ngFor="let item of this.movies | orderBy : ['episode_id']">
+      <mat-icon matListIcon>folder</mat-icon>
+      <h3 matLine> <a [routerLink]=" [ './summary/' + item.episode_id] ">{{item.title}}</a></h3>
+		<p matLine><span><strong>Episode:</strong> {{item.episode_id}} </span></p>
+    </mat-list-item>
+  </mat-list>
+</mat-card>

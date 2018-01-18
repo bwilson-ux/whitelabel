@@ -51,6 +51,7 @@ import {
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+
 /*
  * Platform and Environment providers/directives/pipes
  */
@@ -65,6 +66,7 @@ import { AboutComponent } from './about';
 import { MovieService } from './+movie/movie.service';
 import { NoContentComponent } from './no-content';
 import { XLargeDirective } from './home/x-large';
+import { McSidenav } from './core/comp/mc-sidenav/mc-sidenav.component';
 
 import '../styles/styles.scss';
 import '../styles/theme.scss';
@@ -84,6 +86,8 @@ type StoreType = {
 /**
  * `AppModule` is the main entry point into Angular2's bootstraping process
  */
+
+
 @NgModule({
     bootstrap: [AppComponent],
     declarations: [
@@ -92,6 +96,7 @@ type StoreType = {
         HomeComponent,
         NoContentComponent,
         XLargeDirective,
+        McSidenav,
     ],
     /**
      * Import Angular's modules.
