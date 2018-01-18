@@ -1,9 +1,23 @@
 <mat-toolbar color="primary">
-    <span><mat-icon>mood</mat-icon></span>
-
-    <span>Yay, Material in Angular 2!</span>
-
-    <button mat-icon-button [mat-menu-trigger-for]="menu">
-      <mat-icon>more_vert</mat-icon>
-    </button>
-  </mat-toolbar>
+  <span><mat-icon>mood</mat-icon></span>
+  <span>Whitelabel V2</span>
+  <button mat-icon-button [mat-menu-trigger-for]="menu">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+</mat-toolbar>
+<mat-menu x-position="before" #menu="matMenu">
+  <button mat-menu-item>Option 1</button>
+  <button mat-menu-item>Option 2</button>
+</mat-menu>
+<nav>
+  <a [routerLink]=" ['./'] " routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Index</a>
+  <a [routerLink]=" ['./home'] " routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+  <a [routerLink]=" ['./movies'] " routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Movies</a>
+  <a [routerLink]=" ['./about'] " routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">About</a>
+</nav>
+<main>
+  <router-outlet></router-outlet>
+</main>
+<footer>
+  This is the footer
+</footer>
