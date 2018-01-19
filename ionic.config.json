@@ -1,0 +1,8 @@
+{
+  "name": "whitelabel",
+  "app_id": "dcf0cb67",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}

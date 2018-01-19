@@ -1,0 +1,64 @@
+@import '../../../../styles/variables';
+@import '../../../../styles/mixins';
+
+.mc-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.mc-is-mobile .mc-toolbar {
+  position: fixed;
+  /* Make sure the toolbar will stay on top of the content as it scrolls past. */
+  z-index: 2;
+}
+
+
+.mc-sidenav-container {
+  /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
+     causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
+  flex: 1;
+}
+
+.mc-is-mobile .mc-sidenav-container {
+  /* When the sidenav is fixed, don't constrain the height of the sidenav container. This allows the
+     `<body>` to be our scrolling element for mobile layouts. */
+  flex: 1 0 auto;
+}
+
+.mat-sidenav-content {
+  padding: 20px 30px;
+}
+
+.mat-nav-list {
+  padding-top: 0;
+}
+
+.mat-sidenav {
+  width: 200px;
+  @include box-shadow(0, 0, 5px, rgba(0,0,0,0.1), 1px);
+
+  h3 {
+    padding: 0 10px;
+    background: darken($color-gray, 5%);
+    font-size: 11px;
+    text-transform: uppercase;
+    font-weight: 400;
+    line-height: 34px;
+    margin: 0;
+    letter-spacing: 1px;
+  }
+}
+
+.mc-app-name {
+  flex: 1 0 auto;
+  .mat-icon {
+    position: relative;
+    top: 3px;
+  }
+}
+
