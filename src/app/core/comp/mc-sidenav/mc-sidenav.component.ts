@@ -7,7 +7,7 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 @Component({
   selector: 'mc-sidenav',
   templateUrl: 'mc-sidenav.template.html',
-  styleUrls: ['./mc-sidenav.styles.css']
+  styleUrls: ['./mc-sidenav.styles.scss']
 
 })
 export class McSidenav {
