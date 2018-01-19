@@ -33,7 +33,7 @@ RUN cd /tmp/npm_inst &&\
 ADD . /tmp/app
 RUN cd /tmp/app &&\
     npm run build:aot &&\
-    mv ./dist/* /usr/share/nginx/html/
+    mv ./www/* /usr/share/nginx/html/
 
 # clean
 RUN rm -Rf /tmp/npm_inst  &&\
